@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Hafıza Oyunları</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <!-- Profil seçimi -->
+  <section id="profile-screen" class="screen">
+    <h1>Merhaba! 👋</h1>
+    <p class="subtitle">Sen kimsin?</p>
+    <div class="profile-grid">
+      <button class="profile-card girl" data-profile="girl">
+        <span class="profile-emoji">👧</span>
+        <span class="profile-name">Kız</span>
+      </button>
+      <button class="profile-card boy" data-profile="boy">
+        <span class="profile-emoji">👦</span>
+        <span class="profile-name">Erkek</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Oyun menüsü -->
+  <section id="menu-screen" class="screen hidden">
+    <header class="top-bar">
+      <button id="change-profile" class="icon-btn" title="Profili değiştir">🔄</button>
+      <h2 id="welcome">Hoş geldin!</h2>
+      <span id="profile-badge" class="profile-badge"></span>
+    </header>
+    <h3 class="section-title">🧠 Hafıza Oyunları</h3>
+    <div class="games-grid" id="games-grid"></div>
+  </section>
+</div>
+<script src="js/themes.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
