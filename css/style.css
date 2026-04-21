@@ -87,18 +87,21 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
 /* Menü bölümleri */
 .menu-section { margin-bottom: 36px; }
 
-/* Yakında kartı */
-.coming-soon-card {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: var(--radius); padding: 30px 20px; text-align: center;
-  box-shadow: var(--shadow); color: white;
+/* Macera & Keşif banner */
+.adventure-banner {
+  display: flex; align-items: center; gap: 16px;
+  background: linear-gradient(135deg, #1a1a3e, #2d1b69);
+  border-radius: var(--radius); padding: 20px 24px;
+  box-shadow: var(--shadow); color: white; text-decoration: none;
+  transition: transform 0.15s, filter 0.15s;
 }
-.coming-soon-icons { font-size: 2.2rem; margin-bottom: 12px; letter-spacing: 6px; }
-.coming-soon-text { font-size: 1rem; opacity: 0.9; margin-bottom: 14px; }
-.coming-soon-badge {
-  display: inline-block; background: rgba(255,255,255,0.25);
-  padding: 6px 18px; border-radius: 30px; font-size: 1.1rem; font-weight: bold;
-}
+.adventure-banner:hover { transform: translateY(-3px); filter: brightness(1.1); }
+.adventure-banner:active { transform: scale(0.98); }
+.adventure-icons { font-size: 2rem; letter-spacing: 4px; white-space: nowrap; }
+.adventure-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.adventure-text strong { font-size: 1.1rem; }
+.adventure-text span { font-size: 0.9rem; opacity: 0.75; }
+.adventure-arrow { font-size: 1.6rem; }
 
 /* Oyun kartları */
 .games-grid {

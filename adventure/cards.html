@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Keşif Kartları</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/adventure.css">
+</head>
+<body class="adv-body">
+<div class="adv-wrap cards-wrap">
+  <header class="adv-header">
+    <a class="back-btn" href="index.html">⬅️ Kategoriler</a>
+    <h2 id="cat-title">Yükleniyor...</h2>
+    <div id="progress-text" class="progress-text">1 / 10</div>
+  </header>
+
+  <div class="progress-bar-track">
+    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Kart -->
+  <div class="card-scene" id="card-scene" onclick="flipCard()">
+    <div class="card-inner" id="card-inner">
+      <div class="card-face card-front" id="card-front"></div>
+      <div class="card-face card-back"  id="card-back"></div>
+    </div>
+  </div>
+
+  <!-- Navigasyon -->
+  <div class="card-nav">
+    <button class="btn secondary" id="btn-prev" onclick="prevCard()">⬅️ Geri</button>
+    <button class="btn"           id="btn-next" onclick="nextCard()">İleri ➡️</button>
+  </div>
+
+  <p class="adv-hint">Kartı çevirmek için dokun · Kaydır veya ok tuşlarını kullan</p>
+</div>
+
+<script src="../js/adventure/data.js"></script>
+<script src="../js/adventure/cards.js"></script>
+</body>
+</html>

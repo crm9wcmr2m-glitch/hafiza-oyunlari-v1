@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Macera & Keşif</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/adventure.css">
+</head>
+<body class="adv-body">
+<div class="adv-wrap">
+  <header class="adv-header">
+    <a class="back-btn" href="../index.html">⬅️ Ana Menü</a>
+    <h1>🌍 Macera &amp; Keşif</h1>
+    <p class="adv-subtitle">Kartları çevir, hap bilgileri öğren!</p>
+  </header>
+
+  <div class="adv-cat-grid" id="cat-grid"></div>
+</div>
+
+<script src="../js/adventure/data.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const PROGRESS_KEY = "adventure_progress_v1";
+  function getProgress() { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)||"{}"); } catch { return {}; } }
+
+  const grid = document.getElementById("cat-grid");
+  Object.entries(ADVENTURE_CATEGORIES).forEach(([id, cat]) => {
+    const prog = getProgress();
+    const seen = Object.keys(prog[id]||{}).length;
+    const total = cat.cards.length;
+    const pct = Math.round(seen/total*100);
+
+    const card = document.createElement("a");
+    card.className = "adv-cat-card";
+    card.href = `cards.html?cat=${id}`;
+    card.style.setProperty("--cc", cat.color);
+    card.style.setProperty("--cl", cat.colorLight);
+    card.innerHTML = `
+      <div class="adv-cat-icon">${cat.icon}</div>
+      <div class="adv-cat-name">${cat.title}</div>
+      <div class="adv-cat-count">${total} kart</div>
+      <div class="adv-cat-bar-wrap">
+        <div class="adv-cat-bar" style="width:${pct}%; background:var(--cc)"></div>
+      </div>
+      <div class="adv-cat-pct">${seen}/${total} görüldü</div>
+    `;
+    grid.appendChild(card);
+  });
+});
+</script>
+</body>
+</html>
