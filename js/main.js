@@ -18,6 +18,11 @@ const GAMES = [
   { id: "shadow",     title: "Gölge Eşleme",    icon: "🌓", file: "games/shadow.html" }
 ];
 
+const FUN_GAMES = [
+  { id: "tetris", title: "Tetris",  icon: "🟦", file: "games/tetris.html" },
+  { id: "pong",   title: "Pinpon",  icon: "🏓", file: "games/pong.html" }
+];
+
 function applyProfilePalette(profile) {
   document.body.classList.remove("profile-girl", "profile-boy");
   if (profile) document.body.classList.add("profile-" + profile);
@@ -31,6 +36,7 @@ function showMenu() {
   document.getElementById("welcome").textContent = "Hoş geldin!";
   document.getElementById("profile-badge").textContent = theme.emoji;
   renderGamesGrid(profile);
+  renderFunGrid();
 }
 
 function renderGamesGrid(profile) {
@@ -48,6 +54,22 @@ function renderGamesGrid(profile) {
       <div class="game-icon">${g.icon}</div>
       <div class="game-title">${g.title}</div>
       <div class="game-stars">${"⭐".repeat(total)}${"☆".repeat(9 - total)}</div>
+    `;
+    grid.appendChild(a);
+  });
+}
+
+function renderFunGrid() {
+  const grid = document.getElementById("fun-grid");
+  grid.innerHTML = "";
+  FUN_GAMES.forEach(g => {
+    const a = document.createElement("a");
+    a.className = "game-card";
+    a.href = g.file;
+    a.innerHTML = `
+      <div class="game-icon">${g.icon}</div>
+      <div class="game-title">${g.title}</div>
+      <div class="game-stars">🎮</div>
     `;
     grid.appendChild(a);
   });

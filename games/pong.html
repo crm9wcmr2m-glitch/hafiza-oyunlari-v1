@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Pinpon</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body { background: #0d1117; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 10px; }
+  h1.game-title-big { color: #e0ffe0; margin-bottom: 8px; }
+  #pong-canvas { border: 3px solid #333; border-radius: 8px; background: #000; display: block; max-width: 100%; }
+  .pong-info { color: #aaa; font-size: 0.85rem; text-align: center; margin: 8px 0; line-height: 1.6; }
+  .scores { display: flex; gap: 40px; justify-content: center; margin: 10px 0; color: white; font-size: 1.8rem; font-weight: bold; }
+  .score-box { text-align: center; }
+  .score-box small { font-size: 0.75rem; color: #888; display: block; }
+  #pong-start {
+    background: #22c55e; color: white; border: none; padding: 14px 32px;
+    border-radius: 14px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px;
+  }
+  #pong-start:hover { background: #16a34a; }
+  /* Mobil paddle butonları */
+  .paddle-controls { display: none; justify-content: space-between; width: 100%; max-width: 600px; margin-top: 14px; gap: 20px; }
+  .paddle-side { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .paddle-side label { color: #888; font-size: 0.75rem; }
+  .p-btn {
+    width: 70px; height: 60px; border: none; border-radius: 14px;
+    font-size: 1.6rem; cursor: pointer; font-family: inherit; font-weight: bold;
+  }
+  .p-btn.up { background: #3b82f6; color: white; }
+  .p-btn.down { background: #f97316; color: white; }
+  .p-btn:active { transform: scale(0.92); }
+  @media (max-width: 700px) { .paddle-controls { display: flex; } .pong-info { display: none; } }
+</style>
+</head>
+<body>
+<a class="back-btn btn secondary" href="../index.html">⬅️ Menü</a>
+<h1 class="game-title-big">🏓 Pinpon</h1>
+<div class="scores">
+  <div class="score-box"><span id="score-l">0</span><small>Sol (W/S)</small></div>
+  <div class="score-box"><span id="score-r">0</span><small>Sağ (↑↓)</small></div>
+</div>
+<canvas id="pong-canvas" width="600" height="380"></canvas>
+<p class="pong-info">Sol oyuncu: W / S &nbsp;|&nbsp; Sağ oyuncu: ↑ / ↓ &nbsp;|&nbsp; Space: Duraklat</p>
+<button id="pong-start">▶ Başla</button>
+<div class="paddle-controls">
+  <div class="paddle-side">
+    <label>Sol Oyuncu</label>
+    <button class="p-btn up" id="l-up">⬆️</button>
+    <button class="p-btn down" id="l-down">⬇️</button>
+  </div>
+  <div class="paddle-side">
+    <label>Sağ Oyuncu</label>
+    <button class="p-btn up" id="r-up">⬆️</button>
+    <button class="p-btn down" id="r-down">⬇️</button>
+  </div>
+</div>
+<script src="../js/games/pong.js"></script>
+</body>
+</html>

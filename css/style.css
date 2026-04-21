@@ -84,6 +84,22 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
 .icon-btn:active { transform: scale(0.92); }
 .profile-badge { font-size: 2rem; }
 
+/* Menü bölümleri */
+.menu-section { margin-bottom: 36px; }
+
+/* Yakında kartı */
+.coming-soon-card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: var(--radius); padding: 30px 20px; text-align: center;
+  box-shadow: var(--shadow); color: white;
+}
+.coming-soon-icons { font-size: 2.2rem; margin-bottom: 12px; letter-spacing: 6px; }
+.coming-soon-text { font-size: 1rem; opacity: 0.9; margin-bottom: 14px; }
+.coming-soon-badge {
+  display: inline-block; background: rgba(255,255,255,0.25);
+  padding: 6px 18px; border-radius: 30px; font-size: 1.1rem; font-weight: bold;
+}
+
 /* Oyun kartları */
 .games-grid {
   display: grid;

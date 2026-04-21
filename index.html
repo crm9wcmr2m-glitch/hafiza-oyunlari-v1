@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Hafıza Oyunları</title>
+<title>Çocuk Oyun Sitesi</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -24,15 +24,35 @@
     </div>
   </section>
 
-  <!-- Oyun menüsü -->
+  <!-- Ana menü -->
   <section id="menu-screen" class="screen hidden">
     <header class="top-bar">
       <button id="change-profile" class="icon-btn" title="Profili değiştir">🔄</button>
       <h2 id="welcome">Hoş geldin!</h2>
       <span id="profile-badge" class="profile-badge"></span>
     </header>
-    <h3 class="section-title">🧠 Hafıza Oyunları</h3>
-    <div class="games-grid" id="games-grid"></div>
+
+    <!-- Bölüm 1: Hafıza Oyunları -->
+    <div class="menu-section">
+      <h3 class="section-title">🧠 Hafıza Oyunları</h3>
+      <div class="games-grid" id="games-grid"></div>
+    </div>
+
+    <!-- Bölüm 2: Eğlence Oyunları -->
+    <div class="menu-section">
+      <h3 class="section-title">🎮 Eğlence Oyunları</h3>
+      <div class="games-grid" id="fun-grid"></div>
+    </div>
+
+    <!-- Bölüm 3: Macera & Keşif (yakında) -->
+    <div class="menu-section">
+      <h3 class="section-title">🌍 Macera &amp; Keşif</h3>
+      <div class="coming-soon-card">
+        <div class="coming-soon-icons">🏛️ 🔭 🗺️ 🦕 🌊</div>
+        <div class="coming-soon-text">Tarih, Fen, Genel Kültür ve İstanbul Kronolojisi</div>
+        <div class="coming-soon-badge">Yakında ✨</div>
+      </div>
+    </div>
   </section>
 </div>
 <script src="js/themes.js"></script>

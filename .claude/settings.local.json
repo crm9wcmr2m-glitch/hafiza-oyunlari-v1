@@ -10,7 +10,16 @@
       "Bash(git init *)",
       "Bash(git config *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(git push *)",
+      "Bash(git -c credential.helper='' -c \"credential.helper=!echo username=x && echo password=$\\(gh auth token\\)\" push)",
+      "Bash(git remote *)",
+      "Bash(/opt/homebrew/bin/gh auth *)",
+      "Bash(GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=true git -c credential.helper=\"!f\\(\\) { echo username=crm9wcmr2m-glitch; echo password=$\\(gh auth token\\); }; f\" push origin main)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Status:', d.get\\('status'\\), '| URL:', d.get\\('html_url'\\)\\)\")",
+      "Bash(GIT_TERMINAL_PROMPT=0 git -c credential.helper=\"!f\\(\\) { echo username=crm9wcmr2m-glitch; echo password=$\\(gh auth token\\); }; f\" push origin main)"
     ]
   }
 }
