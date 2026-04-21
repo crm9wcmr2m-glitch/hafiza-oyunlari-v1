@@ -249,7 +249,10 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
 .shadow-target {
   background: var(--card-bg); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);
   font-size: clamp(3rem, 10vw, 5rem); text-align: center;
-  filter: brightness(0) saturate(100%);
+}
+.shadow-target .shadow-emoji {
+  display: inline-block;
+  filter: brightness(0) opacity(0.85);
 }
 .shadow-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .shadow-choice {

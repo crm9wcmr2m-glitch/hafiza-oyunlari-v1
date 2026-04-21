@@ -28,7 +28,7 @@ function render(choices, target) {
   wrap.className = "shadow-wrap";
   const shadow = document.createElement("div");
   shadow.className = "shadow-target";
-  shadow.textContent = target;
+  shadow.innerHTML = `<span class="shadow-emoji">${target}</span>`;
   wrap.appendChild(shadow);
   const row = document.createElement("div");
   row.className = "shadow-choices";
