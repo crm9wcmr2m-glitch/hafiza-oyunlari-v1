@@ -6,80 +6,119 @@
 <title>Tetris</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  body { background: #1a1a2e; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 10px; }
-  h1.game-title-big { color: #e0e0ff; margin-bottom: 10px; }
-  .tetris-wrap { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
-  #tetris-canvas { border: 3px solid #444; border-radius: 8px; background: #0d0d1a; display: block; }
-  .side-panel { display: flex; flex-direction: column; gap: 16px; min-width: 120px; }
-  .panel-box {
-    background: #16213e; border: 2px solid #444; border-radius: 12px;
-    padding: 12px; color: #e0e0ff; text-align: center;
-  }
-  .panel-box h3 { font-size: 0.85rem; color: #888; margin-bottom: 8px; text-transform: uppercase; }
-  .panel-box .val { font-size: 1.8rem; font-weight: bold; color: #fff; }
-  #next-canvas { background: #0d0d1a; border-radius: 6px; }
-  .controls { color: #888; font-size: 0.8rem; line-height: 1.7; }
-  .controls span { display: block; }
-  #start-btn {
-    background: #7c3aed; color: white; border: none; padding: 14px 28px;
-    border-radius: 14px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
-    font-family: inherit; width: 100%;
-  }
-  #start-btn:hover { background: #6d28d9; }
-  .back-btn { margin-bottom: 12px; }
-  /* Mobil kontroller */
-  .mobile-controls {
-    display: none; gap: 8px; flex-direction: column; align-items: center; margin-top: 14px;
-  }
-  .mobile-controls .row { display: flex; gap: 8px; }
-  .m-btn {
-    width: 60px; height: 60px; background: #7c3aed; color: white; border: none;
-    border-radius: 14px; font-size: 1.5rem; cursor: pointer; font-family: inherit;
-  }
-  .m-btn:active { background: #5b21b6; transform: scale(0.93); }
-  @media (max-width: 600px) { .mobile-controls { display: flex; } .controls { display: none; } }
+* { box-sizing: border-box; }
+body {
+  background: #1a1a2e;
+  display: flex; flex-direction: column; align-items: center;
+  min-height: 100vh; padding: 10px; margin: 0;
+  font-family: "Comic Sans MS", system-ui, sans-serif;
+}
+
+.top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; max-width: 520px; margin-bottom: 10px; gap: 8px;
+}
+.top-bar a { color: white; text-decoration: none; background: #333; padding: 8px 14px; border-radius: 12px; font-size: 0.95rem; }
+.top-bar h1 { color: #e0e0ff; font-size: 1.4rem; flex: 1; text-align: center; }
+#start-btn {
+  background: #7c3aed; color: white; border: none; padding: 8px 16px;
+  border-radius: 12px; font-size: 0.95rem; font-weight: bold; cursor: pointer; font-family: inherit;
+}
+#start-btn:active { background: #5b21b6; }
+
+/* HUD: skor, seviye, sonraki */
+.hud-row {
+  display: flex; gap: 10px; margin-bottom: 10px; width: 100%; max-width: 520px; justify-content: center;
+}
+.hud-box {
+  background: #16213e; border: 2px solid #444; border-radius: 10px;
+  padding: 8px 14px; color: #e0e0ff; text-align: center; flex: 1; max-width: 120px;
+}
+.hud-box h3 { font-size: 0.7rem; color: #888; margin-bottom: 4px; text-transform: uppercase; }
+.hud-box .val { font-size: 1.4rem; font-weight: bold; color: #fff; }
+#next-canvas { background: #0d0d1a; border-radius: 4px; display: block; margin: 0 auto; }
+
+/* Oyun alanı: sol zon + canvas + sağ zon */
+.game-area {
+  display: flex; align-items: stretch; gap: 0;
+  width: 100%; max-width: 520px; position: relative;
+}
+
+.side-zone {
+  display: flex; align-items: center; justify-content: center;
+  flex: 1; min-width: 60px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  cursor: pointer; user-select: none;
+  transition: background 0.1s;
+  font-size: 2.2rem;
+  color: rgba(255,255,255,0.3);
+}
+.side-zone:active, .side-zone.pressed { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
+
+#tetris-canvas {
+  display: block;
+  background: #0d0d1a;
+  border: 3px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: none;
+  flex-shrink: 0;
+}
+
+/* Alt kontrol: hızlı düşür */
+.bottom-controls {
+  display: flex; gap: 10px; margin-top: 10px; width: 100%; max-width: 520px; justify-content: center;
+}
+.drop-btn {
+  background: #7c3aed; color: white; border: none;
+  padding: 14px 0; border-radius: 16px; font-size: 1.1rem; font-weight: bold;
+  cursor: pointer; font-family: inherit; flex: 1;
+  touch-action: manipulation;
+}
+.drop-btn:active { background: #5b21b6; transform: scale(0.97); }
+.drop-btn.secondary-btn { background: #374151; }
+.drop-btn.secondary-btn:active { background: #1f2937; }
+
+/* Kontrol ipucu — sadece büyük ekranda */
+.keyboard-hint {
+  color: rgba(255,255,255,0.35); font-size: 0.75rem; text-align: center;
+  margin-top: 8px; line-height: 1.7;
+}
+@media (max-width: 500px) { .keyboard-hint { display: none; } }
 </style>
 </head>
 <body>
-<a class="back-btn btn secondary" href="../index.html">⬅️ Menü</a>
-<h1 class="game-title-big">🟦 Tetris</h1>
-<div class="tetris-wrap">
+
+<div class="top-bar">
+  <a href="../index.html">⬅️ Menü</a>
+  <h1>🟦 Tetris</h1>
+  <button id="start-btn">▶ Başla</button>
+</div>
+
+<div class="hud-row">
+  <div class="hud-box"><h3>Skor</h3><div class="val" id="score">0</div></div>
+  <div class="hud-box"><h3>Seviye</h3><div class="val" id="level">1</div></div>
+  <div class="hud-box"><h3>Sonraki</h3><canvas id="next-canvas" width="60" height="60"></canvas></div>
+</div>
+
+<!-- Sol zon | Canvas | Sağ zon -->
+<div class="game-area">
+  <div class="side-zone" id="zone-left">◀</div>
   <canvas id="tetris-canvas" width="240" height="480"></canvas>
-  <div class="side-panel">
-    <div class="panel-box">
-      <h3>Skor</h3>
-      <div class="val" id="score">0</div>
-    </div>
-    <div class="panel-box">
-      <h3>Seviye</h3>
-      <div class="val" id="level">1</div>
-    </div>
-    <div class="panel-box">
-      <h3>Sonraki</h3>
-      <canvas id="next-canvas" width="80" height="80"></canvas>
-    </div>
-    <button id="start-btn">▶ Başla</button>
-    <div class="panel-box controls">
-      <span>← → Hareket</span>
-      <span>↑ Döndür</span>
-      <span>↓ Hızlı</span>
-      <span>Space Düşür</span>
-    </div>
-  </div>
+  <div class="side-zone" id="zone-right">▶</div>
 </div>
-<div class="mobile-controls">
-  <div class="row">
-    <button class="m-btn" id="m-rot">🔄</button>
-  </div>
-  <div class="row">
-    <button class="m-btn" id="m-left">⬅️</button>
-    <button class="m-btn" id="m-down">⬇️</button>
-    <button class="m-btn" id="m-right">➡️</button>
-  </div>
-  <div class="row">
-    <button class="m-btn" id="m-drop" style="width:136px">⬇⬇ Düşür</button>
-  </div>
+
+<!-- Alt: hızlı düşür + duraklat -->
+<div class="bottom-controls">
+  <button class="drop-btn secondary-btn" id="btn-pause">⏸ Duraklat</button>
+  <button class="drop-btn" id="btn-drop">⬇⬇ Düşür</button>
 </div>
+
+<p class="keyboard-hint">
+  Tuş takımı: ← → Hareket &nbsp;|&nbsp; ↑ Döndür &nbsp;|&nbsp; ↓ Hızlı &nbsp;|&nbsp; Space Düşür &nbsp;|&nbsp; P Duraklat
+</p>
+
 <script src="../js/games/tetris.js"></script>
 </body>
 </html>
