@@ -2,59 +2,80 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Tetris</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body {
   background: #1a1a2e;
   display: flex; flex-direction: column; align-items: center;
-  min-height: 100vh; padding: 10px; margin: 0;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  padding: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  margin: 0;
   font-family: "Comic Sans MS", system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 .top-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  width: 100%; max-width: 520px; margin-bottom: 10px; gap: 8px;
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  width: 100%; max-width: 520px; margin-bottom: 8px; gap: 8px;
 }
-.top-bar a { color: white; text-decoration: none; background: #333; padding: 8px 14px; border-radius: 12px; font-size: 0.95rem; }
-.top-bar h1 { color: #e0e0ff; font-size: 1.4rem; flex: 1; text-align: center; }
+.top-bar a {
+  color: white; text-decoration: none; background: #333;
+  padding: 8px 12px; border-radius: 10px; font-size: 0.9rem;
+  display: inline-block;
+}
+.top-bar h1 { color: #e0e0ff; font-size: 1.3rem; -webkit-flex: 1; flex: 1; text-align: center; margin: 0; }
 #start-btn {
-  background: #7c3aed; color: white; border: none; padding: 8px 16px;
-  border-radius: 12px; font-size: 0.95rem; font-weight: bold; cursor: pointer; font-family: inherit;
+  background: #7c3aed; color: white; border: none; padding: 8px 14px;
+  border-radius: 10px; font-size: 0.9rem; font-weight: bold;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
 }
 #start-btn:active { background: #5b21b6; }
 
-/* HUD: skor, seviye, sonraki */
 .hud-row {
-  display: flex; gap: 10px; margin-bottom: 10px; width: 100%; max-width: 520px; justify-content: center;
+  display: -webkit-flex; display: flex;
+  gap: 8px; margin-bottom: 8px;
+  width: 100%; max-width: 520px;
+  -webkit-justify-content: center; justify-content: center;
 }
 .hud-box {
   background: #16213e; border: 2px solid #444; border-radius: 10px;
-  padding: 8px 14px; color: #e0e0ff; text-align: center; flex: 1; max-width: 120px;
+  padding: 6px 12px; color: #e0e0ff; text-align: center;
+  -webkit-flex: 1; flex: 1; max-width: 110px;
 }
-.hud-box h3 { font-size: 0.7rem; color: #888; margin-bottom: 4px; text-transform: uppercase; }
-.hud-box .val { font-size: 1.4rem; font-weight: bold; color: #fff; }
+.hud-box h3 { font-size: 0.65rem; color: #888; margin: 0 0 2px; text-transform: uppercase; }
+.hud-box .val { font-size: 1.3rem; font-weight: bold; color: #fff; }
 #next-canvas { background: #0d0d1a; border-radius: 4px; display: block; margin: 0 auto; }
 
-/* Oyun alanı: sol zon + canvas + sağ zon */
+/* Oyun alanı */
 .game-area {
-  display: flex; align-items: stretch; gap: 0;
-  width: 100%; max-width: 520px; position: relative;
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: stretch; align-items: stretch;
+  gap: 0; width: 100%; max-width: 520px; position: relative;
 }
 
 .side-zone {
-  display: flex; align-items: center; justify-content: center;
-  flex: 1; min-width: 60px;
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+  -webkit-flex: 1; flex: 1; min-width: 52px; max-width: 80px;
   background: rgba(255,255,255,0.04);
-  border-radius: 16px;
-  cursor: pointer; user-select: none;
-  transition: background 0.1s;
-  font-size: 2.2rem;
-  color: rgba(255,255,255,0.3);
+  border-radius: 14px;
+  cursor: pointer;
+  -webkit-user-select: none; user-select: none;
+  -webkit-transition: background 0.1s; transition: background 0.1s;
+  font-size: 2rem;
+  color: rgba(255,255,255,0.25);
+  touch-action: none;
 }
-.side-zone:active, .side-zone.pressed { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
+.side-zone.pressed,
+.side-zone:active { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); }
 
 #tetris-canvas {
   display: block;
@@ -63,29 +84,37 @@ body {
   border-radius: 8px;
   cursor: pointer;
   touch-action: none;
-  flex-shrink: 0;
+  -webkit-flex-shrink: 0; flex-shrink: 0;
 }
 
-/* Alt kontrol: hızlı düşür */
+/* Alt kontroller — safe-area farkında */
 .bottom-controls {
-  display: flex; gap: 10px; margin-top: 10px; width: 100%; max-width: 520px; justify-content: center;
+  display: -webkit-flex; display: flex;
+  gap: 10px; margin-top: 8px;
+  width: 100%; max-width: 520px;
+  -webkit-justify-content: center; justify-content: center;
 }
 .drop-btn {
   background: #7c3aed; color: white; border: none;
-  padding: 14px 0; border-radius: 16px; font-size: 1.1rem; font-weight: bold;
-  cursor: pointer; font-family: inherit; flex: 1;
+  padding: 0; border-radius: 14px; font-size: 1rem; font-weight: bold;
+  cursor: pointer; font-family: inherit;
+  -webkit-flex: 1; flex: 1;
+  min-height: 52px;
   touch-action: manipulation;
 }
-.drop-btn:active { background: #5b21b6; transform: scale(0.97); }
-.drop-btn.secondary-btn { background: #374151; }
-.drop-btn.secondary-btn:active { background: #1f2937; }
+.drop-btn:active { background: #5b21b6; -webkit-transform: scale(0.97); transform: scale(0.97); }
+.drop-btn.sec { background: #374151; }
+.drop-btn.sec:active { background: #1f2937; }
 
-/* Kontrol ipucu — sadece büyük ekranda */
 .keyboard-hint {
-  color: rgba(255,255,255,0.35); font-size: 0.75rem; text-align: center;
-  margin-top: 8px; line-height: 1.7;
+  color: rgba(255,255,255,0.3); font-size: 0.7rem; text-align: center; margin-top: 6px;
 }
-@media (max-width: 500px) { .keyboard-hint { display: none; } }
+@media (max-width: 480px) { .keyboard-hint { display: none; } }
+
+/* Küçük ekranlar (iPhone 6: 375x667) */
+@media (max-width: 380px) {
+  .side-zone { min-width: 40px; font-size: 1.6rem; }
+}
 </style>
 </head>
 <body>
@@ -99,25 +128,21 @@ body {
 <div class="hud-row">
   <div class="hud-box"><h3>Skor</h3><div class="val" id="score">0</div></div>
   <div class="hud-box"><h3>Seviye</h3><div class="val" id="level">1</div></div>
-  <div class="hud-box"><h3>Sonraki</h3><canvas id="next-canvas" width="60" height="60"></canvas></div>
+  <div class="hud-box"><h3>Sonraki</h3><canvas id="next-canvas" width="56" height="56"></canvas></div>
 </div>
 
-<!-- Sol zon | Canvas | Sağ zon -->
 <div class="game-area">
   <div class="side-zone" id="zone-left">◀</div>
   <canvas id="tetris-canvas" width="240" height="480"></canvas>
   <div class="side-zone" id="zone-right">▶</div>
 </div>
 
-<!-- Alt: hızlı düşür + duraklat -->
 <div class="bottom-controls">
-  <button class="drop-btn secondary-btn" id="btn-pause">⏸ Duraklat</button>
-  <button class="drop-btn" id="btn-drop">⬇⬇ Düşür</button>
+  <button class="drop-btn sec" id="btn-pause">⏸ Duraklat</button>
+  <button class="drop-btn"     id="btn-drop">⬇⬇ Düşür</button>
 </div>
 
-<p class="keyboard-hint">
-  Tuş takımı: ← → Hareket &nbsp;|&nbsp; ↑ Döndür &nbsp;|&nbsp; ↓ Hızlı &nbsp;|&nbsp; Space Düşür &nbsp;|&nbsp; P Duraklat
-</p>
+<p class="keyboard-hint">← → Hareket &nbsp;|&nbsp; ↑ Döndür &nbsp;|&nbsp; Space Düşür &nbsp;|&nbsp; P Duraklat</p>
 
 <script src="../js/games/tetris.js"></script>
 </body>

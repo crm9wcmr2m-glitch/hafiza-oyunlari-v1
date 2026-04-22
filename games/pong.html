@@ -2,59 +2,129 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Pinpon</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  body { background: #0d1117; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 10px; }
-  h1.game-title-big { color: #e0ffe0; margin-bottom: 8px; }
-  #pong-canvas { border: 3px solid #333; border-radius: 8px; background: #000; display: block; max-width: 100%; }
-  .pong-info { color: #aaa; font-size: 0.85rem; text-align: center; margin: 8px 0; line-height: 1.6; }
-  .scores { display: flex; gap: 40px; justify-content: center; margin: 10px 0; color: white; font-size: 1.8rem; font-weight: bold; }
-  .score-box { text-align: center; }
-  .score-box small { font-size: 0.75rem; color: #888; display: block; }
-  #pong-start {
-    background: #22c55e; color: white; border: none; padding: 14px 32px;
-    border-radius: 14px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
-    font-family: inherit; margin-top: 10px;
-  }
-  #pong-start:hover { background: #16a34a; }
-  /* Mobil paddle butonları */
-  .paddle-controls { display: none; justify-content: space-between; width: 100%; max-width: 600px; margin-top: 14px; gap: 20px; }
-  .paddle-side { display: flex; flex-direction: column; gap: 8px; align-items: center; }
-  .paddle-side label { color: #888; font-size: 0.75rem; }
-  .p-btn {
-    width: 70px; height: 60px; border: none; border-radius: 14px;
-    font-size: 1.6rem; cursor: pointer; font-family: inherit; font-weight: bold;
-  }
-  .p-btn.up { background: #3b82f6; color: white; }
-  .p-btn.down { background: #f97316; color: white; }
-  .p-btn:active { transform: scale(0.92); }
-  @media (max-width: 700px) { .paddle-controls { display: flex; } .pong-info { display: none; } }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  overflow: hidden;
+  background: #000;
+  touch-action: none;
+  -webkit-user-select: none; user-select: none;
+}
+
+/* Portrait uyarısı */
+#portrait-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 999;
+  background: #000;
+  flex-direction: column; align-items: center; justify-content: center;
+  color: white; text-align: center; gap: 20px;
+  font-family: "Comic Sans MS", system-ui, sans-serif;
+}
+#portrait-overlay .icon { font-size: 5rem; animation: spin 2s linear infinite; }
+#portrait-overlay p { font-size: 1.3rem; opacity: 0.85; padding: 0 30px; }
+@keyframes spin { 0%{transform:rotate(0deg)} 50%{transform:rotate(90deg)} 100%{transform:rotate(90deg)} }
+
+@media (orientation: portrait) {
+  #portrait-overlay { display: -webkit-flex; display: flex; }
+  #game-container   { display: none; }
+}
+
+/* Oyun kabı */
+#game-container {
+  width: 100vw; height: 100vh;
+  display: -webkit-flex; display: flex;
+  flex-direction: column;
+}
+
+/* Üst skor barı */
+.score-bar {
+  display: -webkit-flex; display: flex;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  -webkit-align-items: center; align-items: center;
+  padding: 6px 16px;
+  padding-top: calc(6px + env(safe-area-inset-top, 0px));
+  background: #111;
+  color: white;
+  font-family: "Comic Sans MS", system-ui, sans-serif;
+  flex-shrink: 0;
+}
+.score-side { text-align: center; min-width: 80px; }
+.score-side .name { font-size: 0.7rem; opacity: 0.6; }
+.score-side .pts  { font-size: 1.6rem; font-weight: bold; }
+.score-mid { display: -webkit-flex; display: flex; gap: 10px; -webkit-align-items: center; align-items: center; }
+#btn-start {
+  background: #22c55e; color: white; border: none;
+  padding: 7px 18px; border-radius: 10px;
+  font-size: 0.9rem; font-weight: bold; cursor: pointer;
+  font-family: inherit; touch-action: manipulation;
+}
+#btn-start:active { background: #16a34a; }
+#btn-pause {
+  background: #374151; color: white; border: none;
+  padding: 7px 14px; border-radius: 10px;
+  font-size: 0.9rem; cursor: pointer;
+  font-family: inherit; touch-action: manipulation;
+}
+#btn-pause:active { background: #1f2937; }
+
+/* Canvas alanı */
+.canvas-wrap {
+  -webkit-flex: 1; flex: 1;
+  position: relative; overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+#pong-canvas {
+  display: block;
+  width: 100%; height: 100%;
+  touch-action: none;
+  cursor: default;
+}
+
+/* Dokunma ipucu */
+.touch-hint {
+  position: absolute; bottom: calc(8px + env(safe-area-inset-bottom,0px));
+  left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,0.3); font-size: 0.72rem;
+  font-family: "Comic Sans MS", system-ui, sans-serif;
+  white-space: nowrap; pointer-events: none;
+}
+@media (pointer: fine) { .touch-hint { display: none; } }
 </style>
 </head>
 <body>
-<a class="back-btn btn secondary" href="../index.html">⬅️ Menü</a>
-<h1 class="game-title-big">🏓 Pinpon</h1>
-<div class="scores">
-  <div class="score-box"><span id="score-l">0</span><small>Sol (W/S)</small></div>
-  <div class="score-box"><span id="score-r">0</span><small>Sağ (↑↓)</small></div>
+
+<!-- Portrait uyarısı -->
+<div id="portrait-overlay">
+  <div class="icon">📱</div>
+  <p>Telefonu <strong>yatay</strong> çevir ve Pinpon oyna! 🏓</p>
 </div>
-<canvas id="pong-canvas" width="600" height="380"></canvas>
-<p class="pong-info">Sol oyuncu: W / S &nbsp;|&nbsp; Sağ oyuncu: ↑ / ↓ &nbsp;|&nbsp; Space: Duraklat</p>
-<button id="pong-start">▶ Başla</button>
-<div class="paddle-controls">
-  <div class="paddle-side">
-    <label>Sol Oyuncu</label>
-    <button class="p-btn up" id="l-up">⬆️</button>
-    <button class="p-btn down" id="l-down">⬇️</button>
+
+<!-- Oyun -->
+<div id="game-container">
+  <div class="score-bar">
+    <div class="score-side">
+      <div class="name">Sol 🟢</div>
+      <div class="pts" id="score-l">0</div>
+    </div>
+    <div class="score-mid">
+      <button id="btn-start">▶ Başla</button>
+      <button id="btn-pause">⏸</button>
+    </div>
+    <div class="score-side">
+      <div class="name">Sağ 🔵</div>
+      <div class="pts" id="score-r">0</div>
+    </div>
   </div>
-  <div class="paddle-side">
-    <label>Sağ Oyuncu</label>
-    <button class="p-btn up" id="r-up">⬆️</button>
-    <button class="p-btn down" id="r-down">⬇️</button>
+  <div class="canvas-wrap">
+    <canvas id="pong-canvas"></canvas>
+    <div class="touch-hint">Sol yarı = Sol raket &nbsp;|&nbsp; Sağ yarı = Sağ raket &nbsp;|&nbsp; Parmağını sürükle</div>
   </div>
 </div>
+
 <script src="../js/games/pong.js"></script>
 </body>
 </html>
