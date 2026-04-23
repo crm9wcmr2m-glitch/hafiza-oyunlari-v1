@@ -7,8 +7,8 @@ var LW = 600, LH = 360;
 var PAD_W = 12, PAD_H = 72, BALL_R = 9;
 
 var state = {
-  lPad: { y: LH/2 - PAD_H/2, score: 0 },
-  rPad: { y: LH/2 - PAD_H/2, score: 0 },
+  lPad: { y: LH/2 - PAD_H/2, prevY: LH/2 - PAD_H/2, score: 0 },
+  rPad: { y: LH/2 - PAD_H/2, prevY: LH/2 - PAD_H/2, score: 0 },
   ball: { x: LW/2, y: LH/2, vx: 4.5, vy: 3 },
   running: false, paused: false,
   keys: {}
@@ -93,11 +93,14 @@ function update() {
       state.ball.y >= state.lPad.y - 2 &&
       state.ball.y <= state.lPad.y + PAD_H + 2) {
     state.ball.x = lx + PAD_W + BALL_R;
+    var lPadVy = state.lPad.y - state.lPad.prevY;
     var rel  = (state.ball.y - (state.lPad.y + PAD_H/2)) / (PAD_H/2);
     var ang  = rel * 65 * Math.PI / 180;
-    var spd  = Math.sqrt(state.ball.vx*state.ball.vx + state.ball.vy*state.ball.vy) * 1.03;
+    var spd  = Math.sqrt(state.ball.vx*state.ball.vx + state.ball.vy*state.ball.vy) * 1.05;
     state.ball.vx = Math.abs(Math.cos(ang)) * spd;
-    state.ball.vy = Math.sin(ang) * spd;
+    state.ball.vy = Math.sin(ang) * spd + lPadVy * 0.4;
+    var ts = Math.sqrt(state.ball.vx*state.ball.vx + state.ball.vy*state.ball.vy);
+    if (ts > 20) { state.ball.vx *= 20/ts; state.ball.vy *= 20/ts; }
     beep(440);
   }
 
@@ -108,11 +111,14 @@ function update() {
       state.ball.y >= state.rPad.y - 2 &&
       state.ball.y <= state.rPad.y + PAD_H + 2) {
     state.ball.x = rx - BALL_R;
+    var rPadVy = state.rPad.y - state.rPad.prevY;
     var rel  = (state.ball.y - (state.rPad.y + PAD_H/2)) / (PAD_H/2);
     var ang  = rel * 65 * Math.PI / 180;
-    var spd  = Math.sqrt(state.ball.vx*state.ball.vx + state.ball.vy*state.ball.vy) * 1.03;
+    var spd  = Math.sqrt(state.ball.vx*state.ball.vx + state.ball.vy*state.ball.vy) * 1.05;
     state.ball.vx = -Math.abs(Math.cos(ang)) * spd;
-    state.ball.vy = Math.sin(ang) * spd;
+    state.ball.vy = Math.sin(ang) * spd + rPadVy * 0.4;
+    var ts = Math.sqrt(state.ball.vx*state.ball.vx + state.ball.vy*state.ball.vy);
+    if (ts > 20) { state.ball.vx *= 20/ts; state.ball.vy *= 20/ts; }
     beep(440);
   }
 
@@ -123,6 +129,10 @@ function update() {
   if (state.ball.x + BALL_R >= LW) {
     state.lPad.score++; updateScores(); beep(220); resetBall(-1);
   }
+
+  // Raket konumlarını bir sonraki frame için kaydet (spin hesabı için)
+  state.lPad.prevY = state.lPad.y;
+  state.rPad.prevY = state.rPad.y;
 }
 
 function draw() {
@@ -193,7 +203,8 @@ function updateScores() {
 }
 
 function startGame() {
-  state.lPad.y = LH/2-PAD_H/2; state.rPad.y = LH/2-PAD_H/2;
+  state.lPad.y = LH/2-PAD_H/2; state.lPad.prevY = LH/2-PAD_H/2;
+  state.rPad.y = LH/2-PAD_H/2; state.rPad.prevY = LH/2-PAD_H/2;
   state.lPad.score = 0; state.rPad.score = 0;
   updateScores(); resetBall(1); state.running = true; state.paused = false;
   document.getElementById("btn-start").textContent = "🔁 Yeniden";
