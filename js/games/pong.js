@@ -20,11 +20,16 @@ function resizeCanvas() {
   canvas.width  = wrap.offsetWidth;
   canvas.height = wrap.offsetHeight;
 }
+function scheduleResize() {
+  resizeCanvas();
+  setTimeout(resizeCanvas, 250);
+  setTimeout(resizeCanvas, 600);
+}
 window.addEventListener("resize", resizeCanvas);
-// iOS orientation change
-window.addEventListener("orientationchange", function(){
-  setTimeout(resizeCanvas, 200);
-});
+window.addEventListener("orientationchange", scheduleResize);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", resizeCanvas);
+}
 resizeCanvas();
 
 // Mantıksal → piksel dönüşümü
