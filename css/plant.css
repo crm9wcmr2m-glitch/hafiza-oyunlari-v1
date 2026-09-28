@@ -1,0 +1,102 @@
+/* Bitki Atölyesi */
+.plant-category-grid { margin: 20px auto; }
+
+.plant-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 14px;
+  max-width: 700px;
+  margin: 20px auto;
+}
+.plant-pick-card { padding: 16px 10px; }
+.plant-pick-card .game-icon { font-size: 3rem; }
+
+.plant-controls {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 18px;
+}
+
+.plant-subhint { font-size: 0.85rem; opacity: 0.65; margin-top: -6px; }
+
+.workshop { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+
+.plant-rotate-row {
+  display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+  margin-top: -8px;
+}
+.rotate-btn { padding: 8px 14px; font-size: 0.95rem; }
+.plant-rotate-hint { font-size: 0.8rem; opacity: 0.7; }
+
+.plant-stage {
+  position: relative;
+  width: min(90vw, 380px);
+  aspect-ratio: 1;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #bfe8ff 0%, #bfe8ff 62%, #b6e6a8 62%, #b6e6a8 100%);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  touch-action: none;
+}
+.plant-body {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(5rem, 26vw, 9rem);
+  pointer-events: none;
+  filter: drop-shadow(0 8px 6px rgba(0,0,0,0.15));
+}
+.placed-item {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  touch-action: none;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.2));
+}
+.placed-item:active { cursor: grabbing; }
+.placed-item.selected {
+  outline: 3px dashed var(--primary);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+.placed-item svg { display: block; width: 100%; height: auto; }
+
+.remove-badge {
+  position: absolute;
+  transform: translate(24px, -46px);
+  background: white; border: none; border-radius: 50%;
+  width: 34px; height: 34px; font-size: 1rem; cursor: pointer;
+  box-shadow: var(--shadow); z-index: 999;
+}
+
+.plant-tabs {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  max-width: 700px;
+}
+.tab-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 68px; padding: 8px 10px; font-size: 1.4rem;
+  background: var(--card-bg); border: 3px solid transparent; border-radius: 14px;
+  cursor: pointer; box-shadow: var(--shadow); font-family: inherit;
+}
+.tab-btn span { font-size: 0.68rem; font-weight: bold; color: var(--text); }
+.tab-btn.active { border-color: var(--primary); }
+.tab-btn:active { transform: scale(0.95); }
+
+.palette-row {
+  display: flex; gap: 12px; overflow-x: auto; padding: 10px 6px;
+  max-width: 700px; width: 100%;
+}
+.palette-item {
+  flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--card-bg); border-radius: 14px; padding: 8px; box-shadow: var(--shadow);
+  cursor: grab; touch-action: none; width: 84px;
+}
+.palette-item:active { cursor: grabbing; }
+.palette-thumb { width: 60px; height: 44px; display: flex; align-items: center; justify-content: center; }
+.palette-thumb svg { width: 100%; height: 100%; }
+.palette-item span { font-size: 0.68rem; text-align: center; color: var(--text); }
+
+.drag-ghost {
+  position: fixed; width: 70px; height: 52px; pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; z-index: 1000;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+.drag-ghost svg { width: 100%; height: 100%; }
