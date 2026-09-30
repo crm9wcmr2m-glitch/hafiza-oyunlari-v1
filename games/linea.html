@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>La Linea</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0; width: 100%;
+  height: 100vh; height: 100dvh;
+  overflow: hidden;
+  background: #f4efe3;
+  touch-action: none;
+  -webkit-user-select: none; user-select: none;
+}
+#linea-app {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  padding-left:  env(safe-area-inset-left,  0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.linea-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 14px;
+  padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  background: #2a2a2a;
+  color: #f4efe3;
+  font-family: "Comic Sans MS", system-ui, sans-serif;
+  flex-shrink: 0;
+  gap: 10px;
+}
+.linea-header .back-btn {
+  background: #444; color: #f4efe3; text-decoration: none;
+  padding: 6px 12px; border-radius: 10px; font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.linea-header .back-btn:active { background: #333; }
+.linea-title { font-size: 1.1rem; font-weight: bold; white-space: nowrap; }
+.linea-score { font-size: 0.95rem; opacity: 0.85; min-width: 70px; text-align: right; }
+
+.canvas-wrap {
+  flex: 1; position: relative; overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+#linea-canvas {
+  display: block;
+  width: 100%; height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.linea-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px;
+  background: rgba(244, 239, 227, 0.92);
+  text-align: center;
+  padding: 20px;
+  font-family: "Comic Sans MS", system-ui, sans-serif;
+  color: #2a2a2a;
+}
+.linea-overlay.hidden { display: none; }
+.linea-overlay h1 { font-size: 1.6rem; margin: 0; }
+.linea-overlay p { font-size: 1rem; margin: 0; max-width: 340px; opacity: 0.8; }
+.linea-overlay .big-score { font-size: 2.2rem; font-weight: bold; margin: 0; }
+.linea-overlay .best-score { font-size: 0.9rem; opacity: 0.7; margin: 0; }
+.linea-btn {
+  background: #2a2a2a; color: #f4efe3; border: none;
+  padding: 12px 28px; border-radius: 14px;
+  font-size: 1.05rem; font-weight: bold; cursor: pointer;
+  font-family: inherit; touch-action: manipulation;
+}
+.linea-btn:active { background: #111; }
+</style>
+</head>
+<body>
+
+<div id="linea-app">
+  <div class="linea-header">
+    <a class="back-btn" href="../index.html">⬅️ Menü</a>
+    <div class="linea-title">✏️ La Linea</div>
+    <div class="linea-score" id="live-score">0 m</div>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="linea-canvas"></canvas>
+
+    <div class="linea-overlay" id="start-overlay">
+      <h1>✏️ La Linea</h1>
+      <p>O, tek bir çizginin üzerinde yürüyor. Yolun önünü parmağınla çizmezsen düşer!<br>Elini kaldırma, çizgiyi onun önünden hiç kesme.</p>
+      <p class="best-score" id="best-score-start"></p>
+      <button class="linea-btn" id="btn-play">▶ Başla</button>
+    </div>
+
+    <div class="linea-overlay hidden" id="over-overlay">
+      <h1>Çizgi bitti! 😯</h1>
+      <p class="big-score" id="final-score">0 m</p>
+      <p class="best-score" id="best-score-over"></p>
+      <button class="linea-btn" id="btn-retry">🔁 Tekrar Dene</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/games/linea.js"></script>
+</body>
+</html>

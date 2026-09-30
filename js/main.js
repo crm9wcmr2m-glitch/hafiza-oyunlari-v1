@@ -21,7 +21,8 @@ const GAMES = [
 const FUN_GAMES = [
   { id: "tetris", title: "Tetris",  icon: "🟦", file: "games/tetris.html" },
   { id: "pong",   title: "Pinpon",  icon: "🏓", file: "games/pong.html" },
-  { id: "plant",  title: "Bitki Atölyesi", icon: "🌱", file: "games/plant.html" }
+  { id: "plant",  title: "Bitki Atölyesi", icon: "🌱", file: "games/plant.html" },
+  { id: "linea",  title: "La Linea", icon: "✏️", file: "games/linea.html" }
 ];
 
 function applyProfilePalette(profile) {
