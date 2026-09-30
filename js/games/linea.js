@@ -195,49 +195,42 @@
   }
 
   function drawCharacter(x, footY, angle, grounded) {
-    const legLen = 26;
+    const legLen = 24;
     const hipY = footY - legLen * Math.cos(angle * 0.3);
-    const bodyH = 34;
-    const neckY = hipY - bodyH;
-    const headR = 10;
-    const hatH = 16;
-    const swing = grounded ? Math.sin(walkClock) * 8 : 0;
+    const bellyY = hipY - 16;
+    const neckY = hipY - 30;
+    const headR = 7;
+    const headTopY = neckY - headR * 2;
+    const hatTipY = headTopY - 14;
+    const swing = grounded ? Math.sin(walkClock) * 4 : 0;
+
+    const footR = x + 9 + swing;
+    const footL = x - 9 - swing;
+    const hipR = x + 3;
+    const hipL = x - 3;
 
     ctx.save();
     ctx.strokeStyle = "#161616";
-    ctx.fillStyle = "#161616";
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
+    // One unbroken stroke traces the whole figure, foot to foot -
+    // he is, quite literally, a single line.
     ctx.beginPath();
-    ctx.moveTo(x, hipY);
-    ctx.lineTo(x - 6 + swing, footY);
-    ctx.moveTo(x, hipY);
-    ctx.lineTo(x + 6 - swing, footY);
+    ctx.moveTo(footR, footY);
+    ctx.lineTo(hipR, hipY);
+    ctx.quadraticCurveTo(x + 20, bellyY, x + 2, neckY);
+    ctx.quadraticCurveTo(x + headR + 2, neckY - headR, x + 1, headTopY);
+    ctx.lineTo(x, hatTipY);
+    ctx.quadraticCurveTo(x - headR - 2, neckY - headR, x - 2, neckY);
+    ctx.quadraticCurveTo(x - 20, bellyY, hipL, hipY);
+    ctx.lineTo(footL, footY);
     ctx.stroke();
 
+    ctx.fillStyle = "#161616";
     ctx.beginPath();
-    ctx.moveTo(x - 3, hipY);
-    ctx.quadraticCurveTo(x - 15, hipY - bodyH * 0.55, x - 2, neckY);
-    ctx.quadraticCurveTo(x + 7, hipY - bodyH * 0.55, x + 3, hipY);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(x + 1, neckY - headR + 2, headR, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(x + 1 - headR * 0.9, neckY - headR * 2 + 3);
-    ctx.lineTo(x + 1 + headR * 0.6, neckY - headR * 2 + 3);
-    ctx.lineTo(x + 1 + headR * 0.1, neckY - headR * 2 - hatH);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.fillStyle = "#f4efe3";
-    ctx.beginPath();
-    ctx.arc(x + 5, neckY - headR + 1, 1.6, 0, Math.PI * 2);
+    ctx.arc(x + headR - 2, neckY - headR - 1, 1.5, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.restore();
